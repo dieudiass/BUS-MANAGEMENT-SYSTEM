@@ -1,0 +1,398 @@
+
+
+DROP TABLE CUSTOMER CASCADE CONSTRAINTS;
+DROP TABLE BOOKING CASCADE CONSTRAINTS;
+DROP TABLE BUS CASCADE CONSTRAINTS;
+DROP TABLE DRIVER CASCADE CONSTRAINTS;
+DROP TABLE DESTINATION CASCADE CONSTRAINTS;
+DROP TABLE DEPARTURE CASCADE CONSTRAINTS;
+DROP TABLE TRIP CASCADE CONSTRAINTS;
+DROP TABLE TICKET CASCADE CONSTRAINTS;
+DROP TABLE BUS_TRIP CASCADE CONSTRAINTS;
+DROP TABLE CASHIER CASCADE CONSTRAINTS;
+DROP TABLE CASH_RECEIPT CASCADE CONSTRAINTS;
+DROP TABLE TRIP_SCHEDULED CASCADE CONSTRAINTS;
+DROP TABLE MAINTENANCE CASCADE CONSTRAINTS;
+DROP TABLE SERVICE CASCADE CONSTRAINTS;
+DROP TABLE LOGIN CASCADE CONSTRAINTS;
+DROP SEQUENCE TICKET_NUMBER_SQC;
+DROP SEQUENCE Customer_id_SQC;
+DROP SEQUENCE CashR_ID_SQC;
+DROP SEQUENCE Booking_ID_SQC;
+
+
+CREATE SEQUENCE TICKET_NUMBER_SQC
+INCREMENT BY 1
+START WITH 2
+NOCACHE
+NOCYCLE;
+
+CREATE SEQUENCE Customer_id_SQC
+INCREMENT BY 1
+START WITH 001
+NOCACHE
+NOCYCLE;
+
+
+CREATE SEQUENCE CashR_ID_SQC
+INCREMENT BY 1
+START WITH 01
+NOCACHE
+NOCYCLE;
+
+CREATE SEQUENCE Booking_ID_SQC
+INCREMENT BY 1
+START WITH 1
+NOCACHE
+NOCYCLE;
+
+
+
+
+
+create table login (UserName varchar2(10) primary key,
+Password varchar2(6), UserRight varchar2(15));
+
+insert into login values ('Jabulile','jae123','admin');
+insert into login values ('Erick','nkash5','admin');
+insert into login values ('Thecla','the123','cashier');
+insert into login values ('Antonio','an1234','staff');
+
+commit;
+
+
+CREATE TABLE CUSTOMER(
+Customer_ID Number(5) NOT NULL,
+First_Name varchar2(20) NOT NULL,
+Last_Name varchar2(30) NOT NULL,
+Gender char(5) NOT NULL,
+Street varchar2(20) NOT NULL,
+City varchar2(25) NOT NULL,
+Zip_Code varchar2(4) NOT NULL,
+Tel_Number NUMBER(10) NOT NULL,
+Email varchar2(25) NOT NULL,
+Constraint Customer_ID_PK Primary Key(Customer_ID));
+
+Insert into CUSTOMER
+Values (Customer_id_sqc.nextval,'Shaun','Mlangeni','M','John Street','Free State',1990,0741256385,'Shaun@yahoo.fr');
+Insert into CUSTOMER
+Values (Customer_id_sqc.nextval,'Sbusiso','Matle','F','Wanders Street','Johannesburg',1911,0741256385,'Sbusiso@gmail.com');
+Insert into CUSTOMER
+Values (Customer_id_sqc.nextval,'Sizwe','Mahlong','M','Penelopo Street','CapeTown',1920,0712574123,'Mahl@yahoo.fr');
+Insert into CUSTOMER
+Values (Customer_id_sqc.nextval,'Fezile','Motloung','M','casander street','Pretoria',1930,0742596321,'Fez@gmail.com');
+Insert into CUSTOMER
+Values (Customer_id_sqc.nextval,'Feniyasi','Njomane','F','kwamashu street','Durban',1940,0835614589,'Feni@yahoo.fr');
+
+
+
+CREATE TABLE BOOKING(
+Booking_ID Number(5) NOT NULL,
+Customer_ID Number(5) NOT NULL,
+Customer_Name Varchar2(25) NOT NULL,
+Destination_Name Varchar2(25) NOT NULL,
+Departure_Name Varchar2(25) NOT NULL,
+Price Number(5) NOT NULL,
+Booking_Date DATE NOT NULL,
+Time Varchar2(10) NOT NULL,
+Constraint Booking_ID_PK Primary Key (Booking_ID),
+Constraint Customer_ID_FK7 Foreign Key (Customer_ID) References CUSTOMER(Customer_ID));
+
+Insert into BOOKING
+Values(Booking_ID_SQC.nextval,01,'Shaun','VanderbiljPark','Johannesburg',500,'05-May-17','10:00');
+Insert into BOOKING
+Values(Booking_ID_SQC.nextval,02,'Sbusiso','Johannesburg','Durban',600,'03-May-17','09:00');
+Insert into BOOKING
+Values(Booking_ID_SQC.nextval,03,'Sizwe','CapeTown','Johannesburg',800,'05-May-17','11:00');
+Insert into BOOKING
+Values(Booking_ID_SQC.nextval,04,'Fezile','Durban','Pretoria',960,'04-May-17','12:00');
+Insert into Booking
+Values(Booking_ID_SQC.nextval,05,'Feniyasi','Pretoria','Johannesburg',630,'02-May-17','09:00');
+
+ 
+
+CREATE TABLE BUS(
+Bus_Number varchar2(5)NOT NULL,
+COLOR varchar2(20)NOT NULL,
+Model varchar2(20)NOT NULL,
+Constraint Bus_Number_PK1 Primary Key (Bus_Number));
+
+
+Insert into Bus
+Values ('B001','blue','MErcedes');
+Insert into Bus
+Values ('B002','black','Mercedes');
+Insert into Bus
+Values ('B003','white','Mazda');
+Insert into Bus
+Values ('B004','yellow','Bmw');
+Insert into Bus
+Values ('B005','green','Toyota');
+
+
+
+CREATE TABLE DRIVER(
+Driver_ID varchar2(10) NOT NULL,
+Bus_Number varchar2(5)NOT NULL,
+First_Name varchar2(30) NOT NULL,
+Last_Name varchar2(20) NOT NULL,
+TEL_Number  NUMBER(10) NOT NULL,
+Constraint Driver_ID_PK Primary key(Driver_ID ),
+Constraint Bus_Number_FK Foreign Key (Bus_Number) References BUS(Bus_Number));
+
+Insert into DRIVER
+Values ('D001','B001','sbusiso','mathivha',0723695452);
+Insert into DRIVER
+Values ('D002','B002','mandla','masango',0715855854);
+Insert into DRIVER
+Values ('D003','B003','goodwill','nkuna',0825545841);
+Insert into DRIVER
+Values ('D004','B004','shaun','holaf',0834527862);
+Insert into DRIVER
+Values ('D005','B005','shoi','rootogue',0745862354);
+
+
+CREATE TABLE DESTINATION(
+Destination_Code varchar2(5) NOT NULL,
+Destination_Name varchar2(20) NOT NULL,
+PRICE Number(20) NOT NULL,
+Arrival_Time VARCHAR2(10) NOT NULL,
+Constraint Destination_Code_PK2 Primary key(Destination_Code));
+
+Insert into DESTINATION
+Values ('DE01','Vanderbijlpark',500,'08:00');
+
+Insert into DESTINATION
+Values ('DE02','Johannesburg',600,'08:30');
+
+Insert into DESTINATION
+Values ('DE03','Cape town',800,'09:00');
+
+Insert into DESTINATION
+Values ('DE04','Durban',960,'05:30');
+
+Insert into DESTINATION
+Values ('DE05','Pretoria',630,'10:00');
+
+
+
+CREATE TABLE DEPARTURE(
+Departure_ID varchar2(5) NOT NULL,
+Departure_Name varchar2(20) NOT NULL,
+Time vARCHAR2(10) NOT NULL,
+Constraint Departure_ID_PK2 Primary key(Departure_ID));
+
+Insert Into DEPARTURE
+Values('DP01','Johannesburg','08:00');
+Insert Into DEPARTURE
+Values('DP02','Durban','09:00');
+Insert Into DEPARTURE
+Values('DP03','Johannesburg','10:00');
+Insert Into DEPARTURE
+Values('DP04','Pretoria','11:00');
+Insert Into DEPARTURE
+Values('DP05','Johannesburg','12:00');
+
+CREATE TABLE CASHIER(
+Cashier_ID varchar2(10) NOT NULL,
+F_Name varchar2(20) NOT NULL,
+L_Name varchar2(20) NOT NULL,
+Street varchar2(20) NOT NULL,
+City   varchar2(25) NOT NULL,
+State  varchar2(20) NOT NULL,
+Zip_Code varchar2(5) NOT NULL,
+Tel_Number NUMBER(10) NOT NULL,
+Email varchar2(25) NOT NULL,
+Constraint Cashier_ID_PK Primary Key(Cashier_ID));
+
+
+Insert Into CASHIER
+Values('CR01','Njomane','Motloung','John Street','Johanesburg','Gauteng',1911,0741256385,'Motloung@gmail.com');
+Insert Into CASHIER
+Values('CR02','Sbusiso','Mahlong','casander street','Pretoria','Gauteng',1911,0741256385,'Mahlong@gmail.com');
+Insert Into CASHIER
+Values('CR03','Fezile','Matle','kwamashu street','Johanesburg','Gauteng',1911,0741256385,'Matle@gmail.com');
+Insert Into CASHIER
+Values('CR04','Njomane','Motloung','Wanders Street','CapeTown','Gauteng',1911,0741256385,'Njomane@yahoo.fr');
+Insert Into CASHIER
+Values('CR05','Njomane','Motoung','kwamashu street','Johanesburg','Gauteng',1911,0741256385,'Motoung@hotmail.com');
+
+
+
+CREATE TABLE CASH_RECEIPT(
+CashR_ID varchar2(5) NOT NULL,
+Customer_ID Number(5) NOT NULL,
+Amount varchar2(5) NOT NULL,
+dep_Date DATE NOT NULL,
+Cashier_ID varchar2(10) NOT NULL,
+Constraint CashR_ID_PK Primary Key (CashR_ID),
+Constraint Cashier_ID_FK2 Foreign Key (Cashier_ID) References CASHIER(Cashier_ID),
+Constraint Customer_ID_FK Foreign Key (Customer_ID) References CUSTOMER(Customer_ID));
+
+Insert Into CASH_RECEIPT
+Values(CashR_ID_SQC.nextval,001,'R350','03-MAR-2017','CR01');
+Insert Into CASH_RECEIPT
+Values(CashR_ID_SQC.nextval,002,'R450','04-MAR-2017','CR02');
+Insert Into CASH_RECEIPT
+Values(CashR_ID_SQC.nextval,003,'R550','05-MAR-2017','CR03');
+Insert Into CASH_RECEIPT
+Values(CashR_ID_SQC.nextval,004,'R650','06-MAR-2017','CR04');
+Insert Into CASH_RECEIPT
+Values(CashR_ID_SQC.nextval,005,'R750','07-MAR-2017','CR05');
+
+CREATE TABLE TRIP(
+Trip_Code vARCHAR2(10) NOT NULL,
+Description Varchar2(25),
+Trip_Date DATE NOT NULL,
+TIME VARCHAR2(10) NOT NULL,
+Departure_ID varchar2(5) NOT NULL,
+Destination_Code varchar2(5) NOT NULL,
+Cashier_ID varchar2(5) NOT NULL,
+CashR_ID varchar2(5) NOT NULL,
+Constraint Trip_Code_PK3 Primary key(Trip_Code),
+Constraint Departure_ID_FK2 Foreign Key (Departure_ID) References DEPARTURE(Departure_ID),
+Constraint Cashier_ID_FK Foreign Key (Cashier_ID) References CASHIER(Cashier_ID),
+Constraint CashR_ID_FK Foreign Key (CashR_ID) References CASH_RECEIPT(CashR_ID),
+Constraint Destination_Code_FK2 Foreign Key (Destination_Code) REferences Destination(Destination_Code));
+
+Insert Into TRIP
+Values('VNDB01','VanderbijlPark','03-MAR-17','08:00','DP01','DE01','CR01',01);
+Insert Into TRIP
+Values('JHB01','Johannesburg','04-MAR-17','09:00','DP02','DE01','CR02',02);
+Insert Into TRIP
+Values('CPT01','Cape Town','05-MAR-17','10:00','DP03','DE01','CR03',03);
+Insert Into TRIP
+Values('DBN01','Durban','06-MAR-17','11:00','DP04','DE01','CR04',04);
+Insert Into TRIP
+Values('PTA02','Pretoria','07-MAR-17','12:00','DP05','DE01','CR05',05);
+
+
+
+CREATE TABLE TICKET(
+Ticket_Number Number(5) NOT NULL,
+dep_Date Date NOT NULL, 
+Time VARCHAR2(10) NOT NULL,
+Customer_ID Number(5) NOT NULL,
+Trip_Code vARCHAR(15) NOT NULL,
+CashR_ID varchar2(5) NOT NULL,
+Constraint Ticket_Number_PK4 Primary Key(Ticket_Number),
+Constraint Trip_Code_FK2 Foreign Key (Trip_Code) REferences TRIP(Trip_Code),
+Constraint CashR_ID_FK7 Foreign Key (CashR_ID) References CASH_RECEIPT(CashR_ID)  ,
+Constraint Customer_ID_FK6 Foreign Key (Customer_ID) References CUSTOMER(Customer_ID));
+
+
+Insert into TICKET
+Values (Ticket_Number_sqc.nextval,'03-MAR-2017','08:00',001,'VNDB01',01);
+Insert into TICKET
+Values (Ticket_Number_sqc.nextval,'04-MAR-2017','09:00',002,'JHB01',02);
+Insert into TICKET
+Values (Ticket_Number_sqc.nextval,'05-MAR-2017','10:00',003,'CPT01',03);
+Insert into TICKET
+Values (Ticket_Number_sqc.nextval,'06-MAR 2017','11:00',004,'DBN01',04);
+Insert into TICKET
+Values (Ticket_Number_sqc.nextval,'07-MAR-17','12:00',005,'PTA02',05);
+
+
+
+CREATE TABLE BUS_TRIP(
+Trip_Code varchar2(5) NOT NULL,
+Bus_Number varchar2(5) NOT NULL,
+dep_Date DATE NOT NULL,
+Constraint Bus_Number_FK1 Foreign Key (Bus_Number) References Bus(Bus_Number));
+
+
+Insert Into BUS_TRIP
+Values ('T001','B001','03-MAR-2017');
+Insert Into BUS_TRIP
+Values ('T002','B002','04-MAR-2017');
+Insert Into BUS_TRIP
+Values ('T003','B003','05-MAR-2017');
+Insert Into BUS_TRIP
+Values ('T004','B004','06-MAR-2017');
+Insert Into BUS_TRIP
+Values ('T005','B005','07-MAR-2017');
+
+
+
+
+
+
+
+CREATE TABLE TRIP_SCHEDULED(
+Customer_ID Number(5) NOT NULL,
+Trip_Code Number(5) NOT NULL,
+Scheduled_Time vARCHAR2(10) NOT NULL,
+Constraint Trip_Code_FK3 Foreign Key (Trip_Code) References TRIP(Trip_Code),
+Constraint Customer_ID_FK3 Foreign Key (Customer_ID) References CUSTOMER(Customer_ID));
+
+
+Insert Into TRIP_SCHEDULED
+Values(001,01,'08:00');
+Insert Into TRIP_SCHEDULED
+Values(002,02,'09:00');
+Insert Into TRIP_SCHEDULED
+Values(003,03,'10:00');
+Insert Into TRIP_SCHEDULED
+Values(004,04,'11:00');
+Insert Into TRIP_SCHEDULED
+Values(005,05,'12:00');
+
+
+CREATE TABLE MAINTENANCE(
+Maintenance_Code varchar2(5) NOT NULL,
+m_Date DATE NOT NULL,
+Time varchar2(10) NOT NULL,
+Type varchar2(35) NOT NULL,
+Duration varchar2(15) NOT NULL,
+Constraint Maintenance_Code_PK Primary key(Maintenance_Code));
+
+Insert Into MAINTENANCE
+Values('M001','10-MAR-2017','12:00 ','Tyres Maintenance','2 hours');
+Insert Into MAINTENANCE
+Values('M002','15-Apr-2017','10:00 PM','Tyres Maintenance','1 hours');
+Insert Into MAINTENANCE
+Values('M003','10-May-2017','09:00 PM','Engine Service','4 hours');
+Insert Into MAINTENANCE
+Values('M004','25-May-2017','07:00 PM','Engine Service','3 hours');
+Insert Into MAINTENANCE
+Values('M005','12-June-2017','12:00 PM','General Check up','5 hours');
+Insert Into MAINTENANCE
+Values('M006','10-Jul-2017','14:00 PM','Tyres Maintenance','2 hours');
+
+CREATE TABLE SERVICE(
+Service_No varchar2(5) NOT NULL,
+Bus_Number varchar2(5) NOT NULL,
+Maintenance_Code varchar2(5) NOT NULL,
+Constraint Service_No_PK Primary key(Service_No),
+Constraint Bus_Number_FK4 Foreign Key (Bus_Number) References Bus(Bus_Number),
+Constraint Maintenance_Code_FK5 Foreign Key (Maintenance_Code) References Maintenance(Maintenance_Code));
+
+Insert Into SERVICE
+Values('S001','B001','M001');
+Insert Into SERVICE
+Values('S002','B002','M002');
+Insert Into SERVICE
+Values('S003','B003','M003');
+Insert Into SERVICE
+Values('S004','B004','M004');
+Insert Into SERVICE
+Values('S005','B005','M005');
+
+
+SELECT * FROM CUSTOMER;
+SELECT * FROM BUS;
+SELECT * FROM DRIVER;
+SELECT * FROM DESTINATION;
+SELECT * FROM TRIP;
+SELECT * FROM TICKET;
+SELECT * FROM BUS_TRIP; 
+SELECT * FROM CASHIER; 
+SELECT * FROM CASH_RECEIPT; 
+SELECT * FROM TRIP_SCHEDULED;
+SELECT * FROM MAINTENANCE;
+SELECT * FROM DEPARTURE;
+SELECT * FROM SERVICE;
+
+
+
+
